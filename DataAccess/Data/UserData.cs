@@ -14,11 +14,11 @@ public class UserData : IUserData
 
     public async Task<UserModel?> GetUser(int Id)
     {
-        var result = await Db.LoadData<UserModel, dynamic>("dbo.spUser_GetById", new { Id });
+        var result = await Db.LoadData<UserModel, dynamic>("dbo.spUser_Get", new { Id });
         return result.FirstOrDefault();
     }
 
     public async Task InsertUser(UserModel user) => await Db.SaveData("dbo.spUser_Insert", new { user.FirstName, user.LastName });
-    public async Task Updateuser(UserModel user) => await Db.SaveData("dbo.spUser_Update", user);
+    public async Task Updateuser(UserModel user) => await Db.SaveData("dbo.spUser_Update", new { user.Id, user.FirstName, user.LastName });
     public async Task DeleteUser(int Id) => await Db.SaveData("dbo.spUser_Delete", new { Id });
 }
